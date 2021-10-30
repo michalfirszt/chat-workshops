@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 import { Container } from '@mui/material';
@@ -25,16 +25,22 @@ const SignIn = () => {
     userKeys.LOCAL_STORAGE_KEY
   );
 
+  useEffect(() => {
+    if (usernameKey) {
+      history.replace(paths.root);
+    }
+  }, [history, usernameKey]);
+
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
 
-      if (username && !usernameKey) {
+      if (username) {
         setUsernameKey(username);
         history.push(paths.root);
       }
     },
-    [history, username, usernameKey, setUsernameKey]
+    [history, username, setUsernameKey]
   );
 
   return (
