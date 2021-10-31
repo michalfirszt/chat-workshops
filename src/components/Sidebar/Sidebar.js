@@ -8,7 +8,7 @@ import {
 import { useToggle } from 'react-use';
 import clsx from 'clsx';
 
-const drawerWidth = 240;
+export const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
