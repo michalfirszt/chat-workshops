@@ -104,8 +104,7 @@ const Chat = ({ channelId }) => {
     if (!isLoading) {
       setMessages(data.messages);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [channelId, isLoading]);
+  }, [data?.messages, channelId, isLoading]);
 
   useEffect(() => {
     containerRef.current.scrollTo(0, messages.length * 100);

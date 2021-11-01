@@ -19,6 +19,5 @@ export const useGetChannelMessages = ({
 } = {}) =>
   useQuery(['channelMessages', { channelId }], fetchChannelMessages, {
     select: handleSelectors(selectors),
-    refetchOnWindowFocus: false,
     ...options,
   });
