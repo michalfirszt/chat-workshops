@@ -16,15 +16,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ChatForm = () => {
+const ChatForm = ({ onSubmit }) => {
   const classes = useStyles();
   const [message, setMessage] = useState('');
 
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    setMessage('');
-  }, []);
+      onSubmit?.({ message });
+      setMessage('');
+    },
+    [message, onSubmit]
+  );
 
   return (
     <form onSubmit={handleSubmit}>
