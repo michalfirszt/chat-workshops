@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useGetChannelMessages } from '../../api/chennels';
@@ -34,9 +34,14 @@ const Chat = ({ channelId }) => {
   const { height: windowHeight } = useWindowSize();
   const [formContainerRef, { width }] = useMeasure();
   const [chatFormRef, { height }] = useMeasure();
+  const containerRef = useRef(null);
 
   const [messages, setMessages] = useState([]);
   const { data, isLoading } = useGetChannelMessages({ channelId });
+  const listHeight = useMemo(
+    () => windowHeight - height,
+    [height, windowHeight]
+  );
 
   useEffect(() => {
     if (!isLoading) {
@@ -45,11 +50,16 @@ const Chat = ({ channelId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId, isLoading]);
 
+  useEffect(() => {
+    containerRef.current.scrollTo(0, messages.length * 100);
+  }, [messages]);
+
   return (
     <Box className={classes.container}>
       <Box
+        ref={containerRef}
         className={classes.messagesList}
-        style={{ height: `${windowHeight - height}px` }}
+        style={{ height: `${listHeight}px` }}
       >
         {isLoading ? (
           <CircularProgress />
