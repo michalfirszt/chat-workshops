@@ -57,7 +57,14 @@ const Chat = ({ channelId }) => {
     const ws = new WebSocket('ws://localhost:8080');
 
     ws.onopen = () => {
-      console.log('connected');
+      ws.send(
+        JSON.stringify({
+          type: 'connect',
+          payload: {
+            channelId,
+          },
+        })
+      );
     };
 
     ws.onmessage = (event) => {
@@ -65,9 +72,7 @@ const Chat = ({ channelId }) => {
 
       switch (type) {
         case 'message': {
-          if (channelId === payload.channelId) {
-            setMessages((prevValue) => [...prevValue, payload]);
-          }
+          setMessages((prevValue) => [...prevValue, payload]);
           break;
         }
         default: {
