@@ -46,7 +46,7 @@ const SignIn = () => {
   return (
     <Container>
       <div className={classes.container}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} data-testid="sign-in-form">
           <FormControl fullWidth>
             <TextField
               variant="outlined"
