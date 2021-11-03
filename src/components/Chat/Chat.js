@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     height: '100%',
   },
-  messagesList: {
+  messageList: {
     overflowY: 'scroll',
     padding: theme.spacing(1, 2, 0),
   },
@@ -116,21 +116,23 @@ const Chat = ({ channelId }) => {
   }, [messages]);
 
   return (
-    <Box className={classes.container}>
+    <Box className={classes.container} data-testid="chat-container">
       <Box
         ref={containerRef}
-        className={classes.messagesList}
+        className={classes.messageList}
         style={{ height: `${listHeight}px` }}
       >
         {isLoading ? (
           <CircularProgress />
         ) : (
-          messages.map((message, index) => (
-            <Box key={index} className={classes.message}>
-              <span>{message.username}</span>
-              <Box className={classes.messageContent}>{message.content}</Box>
-            </Box>
-          ))
+          <Box data-testid="message-list">
+            {messages.map((message, index) => (
+              <Box key={index} className={classes.message}>
+                <span>{message.username}</span>
+                <Box className={classes.messageContent}>{message.content}</Box>
+              </Box>
+            ))}
+          </Box>
         )}
       </Box>
       <Box ref={formContainerRef}>
