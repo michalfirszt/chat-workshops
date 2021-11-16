@@ -11,6 +11,7 @@ import { useGetChannelMessages } from '../../api/chennels';
 import { useLocalStorage, useMeasure, useWindowSize } from 'react-use';
 
 import ChatForm from './ChatForm';
+import MessageList from './MessageList';
 import { userKeys } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,16 +21,6 @@ const useStyles = makeStyles((theme) => ({
   messageList: {
     overflowY: 'scroll',
     padding: theme.spacing(1, 2, 0),
-  },
-  message: {
-    margin: theme.spacing(2, 0),
-  },
-  messageContent: {
-    border: `1px solid ${theme.palette.secondary.main}`,
-    borderRadius: theme.spacing(1),
-    padding: theme.spacing(2),
-    marginTop: theme.spacing(0.5),
-    maxWidth: theme.spacing(50),
   },
   chatForm: {
     bottom: 0,
@@ -45,6 +36,9 @@ const Chat = ({ channelId }) => {
   const containerRef = useRef(null);
   const wsRef = useRef(null);
   const [username] = useLocalStorage(userKeys.LOCAL_STORAGE_KEY);
+  const isListAtTheBottom =
+    containerRef.current?.scrollHeight - containerRef.current?.scrollTop ===
+    containerRef.current?.offsetHeight;
 
   const [messages, setMessages] = useState([]);
   const { data, isLoading } = useGetChannelMessages({ channelId });
@@ -112,7 +106,10 @@ const Chat = ({ channelId }) => {
   }, [data?.messages, channelId, isLoading]);
 
   useEffect(() => {
-    containerRef.current.scrollTo(0, messages.length * 100);
+    if (isListAtTheBottom) {
+      containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   return (
@@ -122,18 +119,7 @@ const Chat = ({ channelId }) => {
         className={classes.messageList}
         style={{ height: `${listHeight}px` }}
       >
-        {isLoading ? (
-          <CircularProgress />
-        ) : (
-          <Box data-testid="message-list">
-            {messages.map((message, index) => (
-              <Box key={index} className={classes.message}>
-                <span>{message.username}</span>
-                <Box className={classes.messageContent}>{message.content}</Box>
-              </Box>
-            ))}
-          </Box>
-        )}
+        {isLoading ? <CircularProgress /> : <MessageList messages={messages} />}
       </Box>
       <Box ref={formContainerRef}>
         <Box
