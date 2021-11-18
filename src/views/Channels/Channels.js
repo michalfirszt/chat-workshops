@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { CircularProgress, List, ListItem, ListItemText } from '@mui/material';
 import clsx from 'clsx';
 
-import { useGetChannels } from '../../api/chennels';
 import Sidebar, { drawerWidth } from '../../components/Sidebar';
-import Chat from '../../components/Chat';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -24,15 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Channels = () => {
   const classes = useStyles();
-  const { data, isLoading } = useGetChannels();
   const [channelId, setChannelId] = useState(null);
 
-  useEffect(() => {
-    if (!isLoading) {
-      setChannelId(data.channels[0].id);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+  const data = { channels: [] };
+  const isLoading = data.channels.length;
 
   return (
     <div className={classes.container}>
@@ -57,7 +50,7 @@ const Channels = () => {
         )}
       </Sidebar>
       <main className={classes.content}>
-        {channelId ? <Chat channelId={channelId} /> : <CircularProgress />}
+        {channelId ? <div>Chat</div> : <CircularProgress />}
       </main>
     </div>
   );
