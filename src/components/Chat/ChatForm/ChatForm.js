@@ -31,11 +31,12 @@ const ChatForm = ({ onSubmit }) => {
   );
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} data-testid="chat-form">
       <Grid container className={classes.container}>
         <Grid item xs={10}>
           <TextField
             multiline
+            data-testid="message-input"
             className={classes.chatInput}
             value={message}
             onChange={({ target: { value } }) => setMessage(value)}
