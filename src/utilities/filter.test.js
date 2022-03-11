@@ -1,4 +1,4 @@
-import { filter } from './filter.js';
+const filter = (array, action) => array.filter(action);
 
 test('filter tests', () => {
   const array = [2, 4, 8, 16, 32];
