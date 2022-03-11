@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor, within } from '@testing-library/react';
+import { fireEvent, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WS from 'jest-websocket-mock';
 import MockAdapter from 'axios-mock-adapter';
@@ -41,7 +41,6 @@ test('should send a message', async () => {
   const { getByTestId } = renderComponent();
 
   await ws.connected;
-  await waitFor(() => getByTestId('messages-list'));
 
   expect(getByTestId('chat-container')).toBeInTheDocument();
 
